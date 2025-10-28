@@ -295,12 +295,12 @@ export default function Index() {
               <div>
                 <Icon name="Phone" size={32} className="text-primary mx-auto mb-3" />
                 <p className="font-semibold mb-1">Телефон</p>
-                <p className="text-muted-foreground">+7 (495) 123-45-67</p>
+                <p className="text-muted-foreground">+7 (913) 521-34-79</p>
               </div>
               <div>
                 <Icon name="Mail" size={32} className="text-primary mx-auto mb-3" />
                 <p className="font-semibold mb-1">Email</p>
-                <p className="text-muted-foreground">info@doormaster.ru</p>
+                <p className="text-muted-foreground">+79135213479</p>
               </div>
               <div>
                 <Icon name="MapPin" size={32} className="text-primary mx-auto mb-3" />
