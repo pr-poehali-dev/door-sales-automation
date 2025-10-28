@@ -1,0 +1,10 @@
+{
+  "tests": [
+    {
+      "name": "Get product by ID",
+      "method": "GET",
+      "path": "/?id=1",
+      "expectedStatus": 200
+    }
+  ]
+}

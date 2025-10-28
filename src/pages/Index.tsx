@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardFooter } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -20,6 +21,7 @@ const API_URL = 'https://functions.poehali.dev/d28b6764-0439-489b-88d9-4e922523d
 type CartItem = Product & { quantity: number };
 
 export default function Index() {
+  const navigate = useNavigate();
   const [filter, setFilter] = useState<'all' | 'door' | 'hardware'>('all');
   const [cart, setCart] = useState<CartItem[]>([]);
   const [products, setProducts] = useState<Product[]>([]);
@@ -201,7 +203,7 @@ export default function Index() {
                 <p className="text-muted-foreground">Товары не найдены</p>
               </div>
             ) : filteredProducts.map((product, index) => (
-              <Card key={product.id} className="overflow-hidden hover:shadow-lg transition-shadow animate-scale-in" style={{ animationDelay: `${index * 0.1}s` }}>
+              <Card key={product.id} className="overflow-hidden hover:shadow-lg transition-shadow animate-scale-in cursor-pointer" style={{ animationDelay: `${index * 0.1}s` }} onClick={() => navigate(`/product/${product.id}`)}>
                 <div className="aspect-square bg-secondary/50 flex items-center justify-center">
                   <img src={product.image} alt={product.name} className="w-full h-full object-cover" />
                 </div>
@@ -213,8 +215,11 @@ export default function Index() {
                   <p className="text-muted-foreground text-sm mb-4">{product.description}</p>
                   <p className="text-2xl font-bold text-primary">{product.price.toLocaleString('ru-RU')} ₽</p>
                 </CardContent>
-                <CardFooter className="p-6 pt-0">
-                  <Button className="w-full" onClick={() => addToCart(product)}>
+                <CardFooter className="p-6 pt-0 flex gap-2">
+                  <Button className="flex-1" variant="outline" onClick={(e) => { e.stopPropagation(); navigate(`/product/${product.id}`); }}>
+                    Подробнее
+                  </Button>
+                  <Button className="flex-1" onClick={(e) => { e.stopPropagation(); addToCart(product); }}>
                     <Icon name="ShoppingCart" size={18} className="mr-2" />
                     В корзину
                   </Button>
