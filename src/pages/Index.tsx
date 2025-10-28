@@ -84,6 +84,10 @@ export default function Index() {
               <a href="#about" className="text-sm font-medium hover:text-primary transition-colors">О компании</a>
               <a href="#delivery" className="text-sm font-medium hover:text-primary transition-colors">Доставка</a>
               <a href="#contacts" className="text-sm font-medium hover:text-primary transition-colors">Контакты</a>
+              <a href="/admin" className="text-sm font-medium hover:text-primary transition-colors">
+                <Icon name="Shield" size={16} className="inline mr-1" />
+                Админ
+              </a>
             </nav>
 
             <Sheet>

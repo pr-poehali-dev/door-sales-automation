@@ -1,0 +1,13 @@
+{
+  "tests": [
+    {
+      "name": "Upload products from CSV",
+      "method": "POST",
+      "path": "/",
+      "body": {
+        "csv_content": "name,description,price,category,image_url,stock_quantity\nТестовая дверь,Описание,15000,door,/placeholder.svg,10"
+      },
+      "expectedStatus": 200
+    }
+  ]
+}
