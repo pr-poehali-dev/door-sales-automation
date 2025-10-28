@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardFooter } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -12,24 +12,37 @@ type Product = {
   category: 'door' | 'hardware';
   image: string;
   description: string;
+  stock_quantity?: number;
 };
 
-const products: Product[] = [
-  { id: 1, name: 'Межкомнатная дверь Классик', price: 12500, category: 'door', image: '/placeholder.svg', description: 'Элегантная дверь из массива дуба' },
-  { id: 2, name: 'Входная дверь Премиум', price: 28900, category: 'door', image: '/placeholder.svg', description: 'Стальная дверь с терморазрывом' },
-  { id: 3, name: 'Дверь-купе Модерн', price: 18700, category: 'door', image: '/placeholder.svg', description: 'Раздвижная система с зеркалом' },
-  { id: 4, name: 'Ручка дверная Классика', price: 850, category: 'hardware', image: '/placeholder.svg', description: 'Матовый хром, универсальная' },
-  { id: 5, name: 'Замок врезной Стандарт', price: 1450, category: 'hardware', image: '/placeholder.svg', description: 'Цилиндровый механизм, 3 ключа' },
-  { id: 6, name: 'Петли скрытые Невидимка', price: 2200, category: 'hardware', image: '/placeholder.svg', description: 'Комплект на одну дверь' },
-];
+const API_URL = 'https://functions.poehali.dev/d28b6764-0439-489b-88d9-4e922523d72c';
 
 type CartItem = Product & { quantity: number };
 
 export default function Index() {
   const [filter, setFilter] = useState<'all' | 'door' | 'hardware'>('all');
   const [cart, setCart] = useState<CartItem[]>([]);
+  const [products, setProducts] = useState<Product[]>([]);
+  const [loading, setLoading] = useState(true);
 
-  const filteredProducts = products.filter(p => filter === 'all' || p.category === filter);
+  useEffect(() => {
+    const fetchProducts = async () => {
+      try {
+        const url = filter === 'all' ? API_URL : `${API_URL}?category=${filter}`;
+        const response = await fetch(url);
+        const data = await response.json();
+        setProducts(data.products || []);
+      } catch (error) {
+        console.error('Error fetching products:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchProducts();
+  }, [filter]);
+
+  const filteredProducts = products;
 
   const addToCart = (product: Product) => {
     setCart(prev => {
@@ -175,7 +188,15 @@ export default function Index() {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {filteredProducts.map((product, index) => (
+            {loading ? (
+              <div className="col-span-full text-center py-12">
+                <p className="text-muted-foreground">Загрузка товаров...</p>
+              </div>
+            ) : filteredProducts.length === 0 ? (
+              <div className="col-span-full text-center py-12">
+                <p className="text-muted-foreground">Товары не найдены</p>
+              </div>
+            ) : filteredProducts.map((product, index) => (
               <Card key={product.id} className="overflow-hidden hover:shadow-lg transition-shadow animate-scale-in" style={{ animationDelay: `${index * 0.1}s` }}>
                 <div className="aspect-square bg-secondary/50 flex items-center justify-center">
                   <img src={product.image} alt={product.name} className="w-full h-full object-cover" />

@@ -1,0 +1,16 @@
+{
+  "tests": [
+    {
+      "name": "Get all products",
+      "method": "GET",
+      "path": "/",
+      "expectedStatus": 200
+    },
+    {
+      "name": "Get products by category - door",
+      "method": "GET",
+      "path": "/?category=door",
+      "expectedStatus": 200
+    }
+  ]
+}
